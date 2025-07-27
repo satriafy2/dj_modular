@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="d-flex between">
+        <h2>LIST PRODUCT</h2>
+        <a href="{% url 'product_create' %}" class="btn success">Create new</a>
+    </div>
+    {% if allow_modify %}
+    {% endif %}
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <td>Name</td>
+                <td>Product Code</td>
+                <td>Bar Code</td>
+                <td>Price</td>
+                <td>Stock</td>
+                {% if allow_modify %}
+                <td></td>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in object_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ obj.name }}</td>
+                <td>{{ obj.product_code }}</td>
+                <td></td>
+                <td>{{ obj.price }}</td>
+                <td>{{ obj.stock }}</td>
+                <td>
+                    {% if allow_modify %}
+                        <a href="{% url 'product_update' pk=obj.id %}">
+                            <button type="button" class="btn">update</button>
+                        </a>
+                        {% if allow_delete %}
+                        <button type="button" class="btn" onclick="confirmDelete({{ obj.id }})">delete</button>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-block hidden">
+    <div class="modal-body">
+        <p>Do you really want to delete product id <b id="product-id">2</b>?</p>
+        <div class="d-flex end">
+            <button type="button" class="btn danger" onclick="submitDelete()">delete</button>
+            <button type="button" class="btn" onclick="cancelDelete()">cancel</button>
+        </div>
+    </div>
+</div>
+
+<form method="POST" id="form-delete" class="form hidden">
+    {% csrf_token %}
+</form>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    var elModal = document.getElementsByClassName('modal-block')[0],
+        elLabelProductId = document.getElementById('product-id'),
+        elFormDelete = document.getElementById('form-delete');
+
+    function confirmDelete(id) {
+        elModal.classList.remove('hidden');
+        elLabelProductId.innerHTML = id;
+        elFormDelete.action = '/product/' + id + '/delete/';
+    }
+
+    function cancelDelete() {
+        elModal.classList.add('hidden');
+    }
+
+    function submitDelete() {
+        elFormDelete.submit();
+    }
+</script>
+{% endblock script %}

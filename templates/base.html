@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    {% block head %}{% endblock head %}
+</head>
+<body>
+    <header class="d-flex end">
+        {% if user.is_authenticated %}
+        <button class="btn" onclick="userLogout()">logout</button>
+        {% endif %}
+    </header>
+    {% block content %}{% endblock content %}
+
+    <form id="form-logout" action="/logout/" method="POST">
+        {% csrf_token %}
+    </form>
+
+    {% for message in messages %}
+    <div class="msg-alert {{ message.tags }}" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+</body>
+<script>
+    var elAlert = [],
+        elFormLogout = document.getElementById('form-logout');
+
+    document.addEventListener('DOMContentLoaded', function(){
+        elAlert = document.getElementsByClassName('msg-alert');
+        if (elAlert.length > 0) setTimeout(hideAlert, 4000);
+    });
+
+    function hideAlert() {
+        el = elAlert[0];
+        el.classList.add('hidden');
+    }
+
+    function userLogout() {
+        elFormLogout.submit();
+    }
+</script>
+{% block script %}{% endblock script %}
+</html>
