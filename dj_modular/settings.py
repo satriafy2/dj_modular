@@ -26,7 +26,10 @@ SECRET_KEY = 'django-insecure-e!8al)!8if1v6i2y*&vm7k%iyf1dq5dv^vge4_c@addii+o_2f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+# CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app', 'http://*.ngrok-free.app']
 
 
 # Application definition
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.core',
     'apps.user',
     'apps.product'
 ]
@@ -132,3 +136,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 
 LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'

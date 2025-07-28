@@ -17,11 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from apps.core.views import CompanyModuleList, ModuleList, add_company_module, remove_company_module
 from apps.user.views import UserLoginView, UserLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', UserLoginView.as_view(template_name='user/login.html'), name='login'),
     path('logout/', UserLogoutView.as_view(), name='logout'),
+    path('', CompanyModuleList.as_view(template_name='core/home.html'), name='home'),
+    path('module/', ModuleList.as_view(template_name='core/module_list.html'), name='module_list'),
+    path('module/<str:module_code>/add/', add_company_module, name='module_add'),
+    path('module/<pk>/remove/', remove_company_module, name='module_remove'),
     path('product/', include('apps.product.urls')),
 ]

@@ -111,3 +111,44 @@ a { text-decoration: none !important; }
 .modal-block.hidden {
     display: none;
 }
+
+.module-icon.sm {
+    width: 32px;
+    height: 32px;
+}
+
+table thead {
+    font-weight: bold;
+}
+
+table thead td {
+    background-color: bisque;
+    padding: .6rem 1rem;
+}
+
+table tbody td {
+    padding: .4rem 1rem;
+}
+
+.container-modules {
+    flex-wrap: wrap;
+}
+
+.container-modules > .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 1.4rem;
+    gap: 1rem;
+    cursor: pointer;
+
+    color: black;
+    font-weight: bold;
+}
+
+.container-modules > .item > .module-icon.md {
+    width: 64px;
+    height: 64px;
+}
+

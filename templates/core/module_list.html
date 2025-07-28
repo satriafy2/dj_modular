@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex between">
+        <h2>LIST MODULES</h2>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <td>Module Name</td>
+                <td>Code</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for module in modules %}        
+            <tr>
+                <td>
+                    <img class="module-icon sm" src="{% static 'icons/shopping-cart.png' %}" alt="con_new">
+                </td>
+                <td>{{ module.name }}</td>
+                <td>{{ module.code }}</td>
+                <td>
+                    {% if module.installed %}
+                    <button class="btn" onclick="confirmRemove({{ module.join_id }})">Uninstall</button>
+                    {% else %}
+                    <button class="btn success" onclick="submitAdd('{{ module.code }}')">Install</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-block hidden">
+    <div class="modal-body">
+        <p>Do you really want remove this module?</p>
+        <div class="d-flex end">
+            <button type="button" class="btn danger" onclick="submitRemove()">uninstall</button>
+            <button type="button" class="btn" onclick="cancelRemove()">cancel</button>
+        </div>
+    </div>
+</div>
+
+<form method="POST" id="form-action" class="form">
+    {% csrf_token %}
+</form>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    var elModal = document.getElementsByClassName('modal-block')[0],
+        elForm = document.getElementById('form-action');
+
+    function confirmRemove(id) {
+        elModal.classList.remove('hidden');
+        elForm.action = '/module/' + id + '/remove/';
+    }
+
+    function cancelRemove() {
+        elModal.classList.add('hidden');
+    }
+
+    function submitRemove() {
+        elForm.submit();
+    }
+
+    function submitAdd(id) {
+        console.log(elForm)
+        elForm.action = '/module/' + id + '/add/';
+        elForm.submit();
+    }
+</script>
+{% endblock script %}

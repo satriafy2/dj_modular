@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex between">
+            <h2>MODULES</h2>
+            {% if allow_modify %}
+            <a href="{% url 'module_list' %}" class="btn success">Modify Module</a>
+            {% endif %}
+        </div>
+
+        <div class="container-modules d-flex">
+        {% for obj in objs %}
+            <a href="{{ obj.module.path }}" class="item">
+                <img class="module-icon md" src="{% static 'icons/shopping-cart.png' %}" alt="con_new">
+                <span>{{ obj.module.name }}</span>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

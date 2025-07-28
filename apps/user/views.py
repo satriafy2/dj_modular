@@ -5,7 +5,6 @@ from django.urls import reverse_lazy
 
 class UserLoginView(LoginView):
     redirect_authenticated_user = True
-    success_url = reverse_lazy('product_list')
 
     def form_invalid(self, form):
         messages.error(self.request, 'Invalid username or password')

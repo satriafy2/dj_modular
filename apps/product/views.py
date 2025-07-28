@@ -35,7 +35,8 @@ class ProductList(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset =  super().get_queryset()
-        return queryset.filter(deleted_at__isnull=True)
+        user_company = self.request.user.company
+        return queryset.filter(deleted_at__isnull=True, company=user_company)
 
 class ProductCreate(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Product
@@ -52,6 +53,10 @@ class ProductCreate(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         ctx = super().get_context_data(**kwargs)
         ctx['page_title'] = 'CREATE PRODUCT'
         return ctx
+    
+    def form_valid(self, form):
+        form.instance.company = self.request.user.company
+        return super().form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.role not in [User.Roles.MANAGER, User.Roles.USER]:
